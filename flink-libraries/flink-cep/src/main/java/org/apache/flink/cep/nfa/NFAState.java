@@ -106,8 +106,24 @@ public class NFAState {
             return false;
         }
         NFAState nfaState = (NFAState) o;
-        return Arrays.equals(partialMatches.toArray(), nfaState.partialMatches.toArray())
-                && Arrays.equals(completedMatches.toArray(), nfaState.completedMatches.toArray());
+        Object[] partialMatchesArr = partialMatches.toArray();
+        Object[] nfaStatePartialMatchesArr = nfaState.partialMatches.toArray();
+        Arrays.sort(
+                partialMatchesArr,
+                (a, b) ->
+                        (((ComputationState) a)
+                                .getVersion()
+                                .toString()
+                                .compareTo(((ComputationState) b).getVersion().toString())));
+        Arrays.sort(
+                nfaStatePartialMatchesArr,
+                (a, b) ->
+                        (((ComputationState) a)
+                                .getVersion()
+                                .toString()
+                                .compareTo(((ComputationState) b).getVersion().toString())));
+
+        return Arrays.equals(partialMatchesArr, nfaStatePartialMatchesArr);
     }
 
     @Override
